@@ -1,0 +1,44 @@
+{% extends 'blogs/base.html' %}
+{% load django_bootstrap5 %}
+
+{% block page_header %}
+    <div class="p-3 mb-4 bg-light border rounded-3">
+        <div class="container-fluid py-4">
+            <h1 class="display-3">Welcome to My Blog!</h1>
+            
+            <p class="lead">Explore the world of knowledge through our blog. Discover new topics, read insightful posts, and join the discussion!</p>
+
+            <a class="btn btn-primary btn-lg mt-1" href="{% url 'blogs:create_blog' %}">Create a Blog &raquo;</a>
+        </div>
+    </div>
+{% endblock page_header %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <!-- 博客列表 -->
+            {% for blog in blogs %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="{% if blog.cover_image %}{{ blog.cover_image.url }}{% else %}https://via.placeholder.com/300{% endif %}" class="card-img-top" alt="Blog Cover">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ blog.title }}</h5>
+                        <p class="card-text">{{ blog.description }}</p>
+                        <a href="{% url 'blogs:blog_detail' blog.id %}" class="btn btn-primary">Read More</a>
+                        
+                        {% if post_id %}
+                            <a href="{% url 'blogs:edit_post' post_id=post_id %}" class="btn btn-secondary">Edit Post</a>
+                        {% endif %}
+                        
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col">
+                <p>No blogs available.</p>
+            </div>
+        {% endfor %}
+        
+        </div>
+    </div>
+{% endblock content %}
