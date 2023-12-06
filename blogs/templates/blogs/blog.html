@@ -1,0 +1,28 @@
+{% extends 'blogs/base.html' %}
+
+{% block page_header %}
+    <h1>{{ blog.title }}</h1>
+{% endblock page_header %}
+
+{% block content %}
+
+<p>
+<a href="{% url 'blogs:publish_post' blog_id=blog.id %}">Add new post</a>
+</p>
+
+{% for post in posts %}
+<div class="card mb-3">
+    <!-- 包含时间戳和编辑链接的标题 -->
+    <h4 class="card-header">
+    {{ post.date_added|date:'M d, Y H:i' }}
+    <small><a href="{% url 'blogs:edit_post' post_id=post.id %}">
+        edit post</a></small>
+    </h4>
+    <!-- 包含条目文本的正文 -->
+    <div class="card-body">{{ post.content|linebreaks }}</div>
+</div>
+{% empty %}
+<p>There are no posts for this blog yet.</p>
+{% endfor %}
+
+{% endblock content %}
